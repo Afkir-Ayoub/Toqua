@@ -1,0 +1,17 @@
+# Core
+streamlit
+streamlit-chat
+
+# LLM
+langchain
+langchain-groq
+langgraph
+
+# Data
+python-dotenv
+requests
+pandas
+
+# Visualization
+plotly
+kaleido
