@@ -62,7 +62,7 @@ with st.sidebar:
     1. Ask about ship performance
     2. The agent will retrieve data and generate interactive graphs
     3. View performance data and metadata
-    4. Download graphs as PNG or HTML
+    4. Download graphs as HTML
     """
     )
 
@@ -164,7 +164,7 @@ with graph_col:
 
         with tab1:
             # Plotly graph
-            st.plotly_chart(st.session_state.latest_figure, use_container_width=True)
+            st.plotly_chart(st.session_state.latest_figure, width="stretch")
 
         with tab2:
             # Display performance data in table format
@@ -219,32 +219,18 @@ with graph_col:
             # Download
             st.markdown("**Export this graph:**")
 
-            col1, col2 = st.columns(2)
-
-            with col1:
-                # PNG export
-                png_data = st.session_state.latest_figure.to_image(format="png")
-                st.download_button(
-                    label="📥 Download as PNG",
-                    data=png_data,
-                    file_name="speed_fuel_curve.png",
-                    mime="image/png",
-                    use_container_width=True,
-                )
-
-            with col2:
-                # HTML export
-                html_data = st.session_state.latest_figure.to_html()
-                st.download_button(
-                    label="📥 Download as HTML",
-                    data=html_data,
-                    file_name="speed_fuel_curve.html",
-                    mime="text/html",
-                    use_container_width=True,
-                )
+            # HTML export
+            html_data = st.session_state.latest_figure.to_html()
+            st.download_button(
+                label="📥 Download as HTML",
+                data=html_data,
+                file_name="speed_fuel_curve.html",
+                mime="text/html",
+                width="stretch",
+            )
 
             st.divider()
-            st.caption("💡 Download PNG for reports, HTML for interactive viewing")
+            st.caption("💡 Download HTML for interactive viewing")
     else:
         st.info("💬 Start a conversation to see generated graphs here!")
         st.markdown(
