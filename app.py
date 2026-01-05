@@ -66,6 +66,22 @@ with st.sidebar:
     """
     )
 
+    st.divider()
+    
+    st.success(
+        """
+    ## Key Features
+
+    - **Interactive Graphs** - Clear ship performance visualizations  
+    
+    - **Real-Time Data** - Live performance metrics inspired by Toqua API
+    
+    - **Conversational Updates** - Modify charts by talking to the AI agent  
+    
+    - **HTML Export** - Share interactive charts instantly
+        """
+    )
+
 
 chat_col, graph_col = st.columns([1, 1], gap="large")
 
