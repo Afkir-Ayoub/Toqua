@@ -5,8 +5,7 @@ Agent Tools for Ship Performance Data Retrieval and Visualization
 from langchain_core.tools import tool
 from api.mock_api import query_mock_api, get_list_ships
 from visualization.graphs import create_speed_fuel_curve
-from visualization.integration import display_graph_artifact
-
+from api.mock_api import CONDITIONING_PARAMS as CONDITIONING_PARAMS_DEFAULT
 
 # Tool 1: Query Ship Performance Data
 @tool("get_ship_performance_data")
@@ -74,11 +73,13 @@ def get_ship_performance_data(
 
         return {
             "status": "success",
-            "imo": imo,
-            "conditioning_params": (
-                conditioning_params if conditioning_params else "default"
-            ),
-            "performance_data": api_response,
+            "data": {
+                "imo": imo,
+                "conditioning_params": (
+                    conditioning_params if conditioning_params else CONDITIONING_PARAMS_DEFAULT
+                ),
+                "performance_data": api_response,
+            },
         }
 
     except Exception as e:
@@ -115,17 +116,21 @@ def display_performance_graph(imo, conditioning_params, performance_data):
 
         # Display the graph
         if fig:
-            display_graph_artifact(fig, metadata)
-        else:
-            return {"status": "error", "message": "Error: Failed to create graph figure."}
+            return {
+                "status": "success",
+                "data": {
+                    "figure": fig.to_json(),
+                    "metadata": metadata,
+                },
+            }
 
-        return {"status": "success", "message": "Graph generated successfully."}
+        return {"status": "error", "message": "Error: Failed to create graph figure."}
 
     except Exception as e:
         return {"status": "error", "message": f"Error generating graph: {str(e)}"}
-    
 
-# Tool 3: List Available Ships    
+
+# Tool 3: List Available Ships
 @tool("list_available_ships")
 def list_available_ships():
     """
@@ -134,9 +139,9 @@ def list_available_ships():
     Returns:
         dict:
             - status (str): "success"
-            - ships (list): List of ship dicts with 'imo', 'name' keys, etc.
+            - ships (list): List of ship dicts with "imo", "name" keys, etc.
     """
 
     ships = get_list_ships()
 
-    return {"status": "success", "ships": ships}
+    return {"status": "success", "data": {"ships": ships}}

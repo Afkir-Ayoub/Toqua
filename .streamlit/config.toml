@@ -10,7 +10,7 @@ showErrorDetails = true
 
 [server]
 enableCORS = false
-enableXsrfProtection = true
+enableXsrfProtection = false
 headless = true
 port = 8501
 
